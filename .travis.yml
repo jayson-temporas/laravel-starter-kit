@@ -9,9 +9,6 @@ php:
 before_script:
   - composer self-update
   - composer install --no-interaction
-  - npm install npm@latest -g
-  - npm install --quiet --no-progress 
   
 script:
   - vendor/bin/phpunit
-  - npm run production
