@@ -1,6 +1,7 @@
 ## Laravel Starter Kit
 
 This laravel starter kit is designed to get you up and running faster and worry less on settings and configuration.
+
 This is ideal for your next TDD laravel project.
 
 ## What's included
@@ -45,6 +46,7 @@ php artisan migrate
 ## PHPUnit Tests
 
 Database use for testing is Sqllite and it will be created in memory when the test starts and will be deleted after running all the tests.
+
 See phpunit.xml for more configuration.
 
 ### Feature Tests
@@ -62,4 +64,5 @@ See phpunit.xml for more configuration.
 ## Why I added Task Collection
 
 I added Feature and Unit Tests for Task collection and created a CRUD so you can use it as guide and get you up and running on your PHPUnit Tests faster.
+
 Feel free to delete it if you want.
