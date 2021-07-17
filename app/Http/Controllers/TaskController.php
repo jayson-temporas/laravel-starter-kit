@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Task;
-use Illuminate\Http\Request;
+use App\Jobs\SendTaskCreatedEmail;
 use \Illuminate\Http\Response;
 
 class TaskController extends Controller
@@ -23,7 +23,9 @@ class TaskController extends Controller
 
     public function store()
     {
-        auth()->user()->tasks()->create($this->validateRequest());
+        $task = auth()->user()->tasks()->create($this->validateRequest());
+
+        SendTaskCreatedEmail::dispatch(auth()->user(), $task);
 
         return redirect()->route('tasks.index');
     }

@@ -35,7 +35,7 @@ class UserLoginTest extends TestCase
     }
 
     /** @test */
-    public function a_user_should_have_a_valid_credentials()
+    public function a_user_can_signed_in_with_valid_credentials()
     {
         $attributes = factory('App\User')->raw(['password' => '12345678', 'email' => 'user@email.com']);
 

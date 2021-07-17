@@ -75,7 +75,7 @@ class UserRegistrationTest extends TestCase
         $attributes['password'] = '12345678';
         $attributes['password_confirmation'] = '12345678';
 
-        $this->post(route('register'), $attributes)->assertSessionHasNoErrors('email');
+        $this->post(route('register'), $attributes)->assertSessionDoesntHaveErrors('email');
     }
 
     /** @test */

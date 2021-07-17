@@ -4,6 +4,11 @@ namespace Tests\Feature;
 
 use App\Task;
 use App\User;
+use App\Jobs\SendTaskCreatedEmail;
+use App\Mail\TaskCreatedEmailNotification;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Events\CallQueuedListener;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -104,7 +109,7 @@ class ManageTasksTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_delete_a_project()
+    public function a_user_can_delete_a_task()
     {
         $task =  factory('App\Task')->create();
 
@@ -113,5 +118,23 @@ class ManageTasksTest extends TestCase
             ->assertRedirect('/tasks');
 
         $this->assertDatabaseMissing('tasks', $task->only('id'));
+    }
+
+    /** @test */
+    public function user_must_receive_email_after_creating_a_task()
+    {
+        Mail::fake();
+        Queue::fake();
+
+        $user = $this->signIn();
+        $task = factory('App\Task')->raw(['user_id' => $user->id]);
+        $this->post(route('tasks.store'), $task);
+        
+        Queue::assertPushed(SendTaskCreatedEmail::class);
+
+        $task = factory('App\Task')->create(['user_id' => $user->id]);
+        
+        Mail::to($user->email)->send(new TaskCreatedEmailNotification($user, $task));
+        Mail::assertSent(TaskCreatedEmailNotification::class);
     }
 }
