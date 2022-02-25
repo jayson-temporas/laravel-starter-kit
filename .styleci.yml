@@ -6,10 +6,6 @@ php:
     not-name:
       - index.php
       - server.php
-    exclude:
-      - "tests"
-    name:
-      - "*.php"
 js:
   finder:
     not-name:
