@@ -3,15 +3,14 @@
 namespace App\Mail;
 
 use App\User;
-use App\Task;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class TaskSummaryEmailNotification extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
     protected $user;
     protected $tasks;
 
@@ -34,7 +33,7 @@ class TaskSummaryEmailNotification extends Mailable
     public function build()
     {
         return $this->view('emails.task_summary')->with([
-            'user' => $this->user,
+            'user'  => $this->user,
             'tasks' => $this->tasks,
         ]);
     }
