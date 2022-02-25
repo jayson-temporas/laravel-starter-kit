@@ -1,4 +1,4 @@
-![Build Status](https://www.travis-ci.com/jayson-temporas/laravel-starter-kit.svg?token=1GpTbDphvpjpfsoCwGYb&branch=master) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Build Status](https://www.travis-ci.com/jayson-temporas/laravel-starter-kit.svg?token=1GpTbDphvpjpfsoCwGYb&branch=master) [![StyleCI](https://github.styleci.io/repos/381906504/shield?branch=master)](https://github.styleci.io/repos/381906504?branch=master) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
 ## Laravel Starter Kit
 
