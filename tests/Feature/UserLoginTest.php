@@ -3,14 +3,14 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Hash;
+use Tests\TestCase;
 
 class UserLoginTest extends TestCase
 {
     use RefreshDatabase;
-    
-    /** @test */   
+
+    /** @test */
     public function signed_in_user_cannot_visit_the_login_page()
     {
         $this->signIn();
@@ -18,7 +18,7 @@ class UserLoginTest extends TestCase
         $this->get(route('login'))->assertRedirect('home');
     }
 
-     /** @test */
+    /** @test */
     public function login_form_requires_an_email()
     {
         $attributes = factory('App\User')->raw(['email' => '']);
@@ -42,7 +42,7 @@ class UserLoginTest extends TestCase
         $this->post(route('login'), $attributes)->assertSessionHasErrors('email');
 
         $validUser = factory('App\User')->create([
-            'password' => Hash::make('12345678')
+            'password' => Hash::make('12345678'),
         ]);
 
         $validAttributes = factory('App\User')->raw(['password' => '12345678', 'email' => $validUser->email]);
@@ -52,7 +52,7 @@ class UserLoginTest extends TestCase
         $this->assertAuthenticatedAs($validUser);
     }
 
-     /** @test */
+    /** @test */
     public function a_signed_in_user_can_logout()
     {
         $this->post(route('logout'))->assertStatus(302);
@@ -61,5 +61,4 @@ class UserLoginTest extends TestCase
 
         $this->post(route('logout'))->assertRedirect('/');
     }
-
 }

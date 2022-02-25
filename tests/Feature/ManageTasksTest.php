@@ -2,20 +2,19 @@
 
 namespace Tests\Feature;
 
-use App\Task;
-use App\User;
 use App\Jobs\SendTaskCreatedEmail;
 use App\Mail\TaskCreatedEmailNotification;
+use App\Task;
+use App\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Events\CallQueuedListener;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ManageTasksTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     /** @test */
     public function guests_cannot_manage_tasks()
     {
@@ -43,7 +42,7 @@ class ManageTasksTest extends TestCase
     public function a_task_requires_a_description()
     {
         $this->signIn();
-        
+
         $attributes = factory('App\Task')->raw(['description' => '']);
 
         $this->post(route('tasks.store'), $attributes)->assertSessionHasErrors('description');
@@ -73,7 +72,7 @@ class ManageTasksTest extends TestCase
              ->patch(route('tasks.update', $task->id), $attributes = ['name' => 'Changed', 'description' => 'Changed'])
              ->assertRedirect(route('tasks.index'));
 
-        $this->get(route('tasks.edit',$task->id))->assertStatus(200);
+        $this->get(route('tasks.edit', $task->id))->assertStatus(200);
 
         $this->assertDatabaseHas('tasks', $attributes);
     }
@@ -91,14 +90,13 @@ class ManageTasksTest extends TestCase
             ->assertSee($userTask['name'])
             ->assertSee($userTask['description'])
             ->assertDontSee($notMyTask['name'])
-            ->assertDontSee($notMyTask['description']);           
+            ->assertDontSee($notMyTask['description']);
     }
-
 
     /** @test */
     public function unauthorized_users_cannot_delete_tasks()
     {
-        $task =  factory('App\Task')->create();
+        $task = factory('App\Task')->create();
 
         $this->delete(route('tasks.destroy', $task->id))
             ->assertRedirect('/login');
@@ -111,7 +109,7 @@ class ManageTasksTest extends TestCase
     /** @test */
     public function a_user_can_delete_a_task()
     {
-        $task =  factory('App\Task')->create();
+        $task = factory('App\Task')->create();
 
         $this->actingAs($task->user)
             ->delete(route('tasks.destroy', $task->id))
@@ -129,11 +127,11 @@ class ManageTasksTest extends TestCase
         $user = $this->signIn();
         $task = factory('App\Task')->raw(['user_id' => $user->id]);
         $this->post(route('tasks.store'), $task);
-        
+
         Queue::assertPushed(SendTaskCreatedEmail::class);
 
         $task = factory('App\Task')->create(['user_id' => $user->id]);
-        
+
         Mail::to($user->email)->send(new TaskCreatedEmailNotification($user, $task));
         Mail::assertSent(TaskCreatedEmailNotification::class);
     }

@@ -8,8 +8,8 @@ use Tests\TestCase;
 class UserRegistrationTest extends TestCase
 {
     use RefreshDatabase;
-    
-    /** @test */   
+
+    /** @test */
     public function signed_in_user_cannot_visit_the_registration_page()
     {
         $this->signIn();
@@ -21,7 +21,7 @@ class UserRegistrationTest extends TestCase
         $this->post(route('register'), $attributes)->assertStatus(302);
     }
 
-    /** @test */   
+    /** @test */
     public function signed_in_user_cannot_register_a_new_user()
     {
         $this->signIn();
@@ -40,7 +40,7 @@ class UserRegistrationTest extends TestCase
         $this->post(route('register'), $attributes)->assertSessionHasNoErrors();
     }
 
-     /** @test */
+    /** @test */
     public function a_user_requires_an_email()
     {
         $attributes = factory('App\User')->raw(['email' => '']);
@@ -64,7 +64,7 @@ class UserRegistrationTest extends TestCase
         $this->post(route('register'), $attributes)->assertSessionHasErrors('password');
     }
 
-     /** @test */
+    /** @test */
     public function a_user_requires_a_valid_email()
     {
         $attributes = factory('App\User')->raw(['email' => 'notvalid']);
@@ -107,5 +107,4 @@ class UserRegistrationTest extends TestCase
 
         $this->post(route('register'), $attributes)->assertSessionHasNoErrors();
     }
-
 }

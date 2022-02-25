@@ -2,16 +2,16 @@
 
 namespace App\Mail;
 
-use App\User;
 use App\Task;
+use App\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class TaskCreatedEmailNotification extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
     protected $user;
 
     /**
